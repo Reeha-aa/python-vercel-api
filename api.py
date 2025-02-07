@@ -1,19 +1,20 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
 import json
-
-# Load the marks from the JSON file
-with open("python-vercel.json") as f:
-    student_data = json.load(f)
+from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS
+CORS(app)  # Enable CORS for GET requests from any origin
+
+# Load the marks data from marks.json
+with open("marks.json") as f:
+    student_data = json.load(f)
 
 @app.route('/api', methods=['GET'])
 def get_marks():
-    names = request.args.getlist('name')  # Get the names from the query parameters
-    marks = [student_data.get(name, 0) for name in names]  # Get marks for each name
+    # Get the names from the query parameters
+    names = request.args.getlist('name')
+    
+    # Find the marks for the requested names
+    marks = [next((student['marks'] for student in student_data if student['name'] == name), None) for name in names]
+    
     return jsonify({"marks": marks})
-
-if __name__ == "__main__":
-    app.run()
