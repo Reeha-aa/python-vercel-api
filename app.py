@@ -3,6 +3,10 @@ import json
 
 app = Flask(__name__)
 
+@app.route("/")  # Add a route for the root URL
+def index():
+    return "Hello, World!"
+
 @app.route("/favicon.ico") # Add a route for the favicon
 def favicon():
     return "", 204
