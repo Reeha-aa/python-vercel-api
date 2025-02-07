@@ -3,6 +3,10 @@ import json
 
 app = Flask(__name__)
 
+@app.route("/favicon.ico") # Add a route for the favicon
+def favicon():
+    return "", 204
+
 # Load student data from the JSON file.  Convert to a dictionary for faster lookups.
 try:
     with open("marks.json", "r") as f:
